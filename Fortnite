@@ -80,7 +80,7 @@ if game.PlaceId == 14067600077 then -- main menu
         end
     end
     
-    webhook("`[" .. Player.Name .. "]`\nThe smallest server is: " .. smallestServer .. " with " .. tostring(playerAmount) .. " players")
+--    webhook("`[" .. Player.Name .. "]`\nThe smallest server is: " .. smallestServer .. " with " .. tostring(playerAmount) .. " players")
     wait(1)
     waitActive()
     mousemoveabs(1120, 920)
