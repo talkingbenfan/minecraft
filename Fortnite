@@ -237,13 +237,13 @@ elseif game.PlaceId == 16787374647 then -- pvp place
                 game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
             ]]
         )
-        wait(0.25)
+        wait(0.15)
+        webhook("`[" .. Player.Name .. "]`\nQueued against the wrong opponent! The match has been successfully dodged!")
         game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
     end
 elseif game.PlaceId == 14069678431 or game.PlaceId == 14070029709 or game.PlaceId == 14069122388 or game.PlaceId == 14071822972 then
     repeat wait() until game:IsLoaded()
-    webhook("`[" .. Player.Name .. "]`\nQueued against the wrong opponent! The match has been successfully dodged!")
-    wait(0.05)
+    webhook("`[" .. Player.Name .. "]`\nHeading to main menu from main game!")
     game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
 end
 
