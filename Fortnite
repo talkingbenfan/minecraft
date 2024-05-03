@@ -7,10 +7,10 @@ when in same server wait until 0 or 1 in queue, then queue, if same player there
 
 -- Variables
 local Friend = "SerendipityXeke" -- player to queue with
+repeat wait() until game.Players.LocalPlayer
 if game.Players.LocalPlayer.Name == "SerendipityXeke" then 
     Friend = "BigKnix"
 end
-repeat wait() until game.Players.LocalPlayer
 local Player = game.Players.LocalPlayer
 local checkSeconds = 30
 
