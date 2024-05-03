@@ -174,14 +174,16 @@ elseif game.PlaceId == 16883972004 then -- queue place
                 webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
             end
          end
-    elseif friendCheck == false then
+         wait(60)
+         webhook("`[" .. Player.Name .. "]`\nTook too long! Waited for 60s. Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
+         game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+        elseif friendCheck == false then
         webhook("`[" .. Player.Name .. "]`\nCould not find whitelisted friend! `[" .. Friend .. "]`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
     --    game:GetService("TeleportService"):Teleport(14067600077, game.Players.LocalPlayer)
         game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
     end
 elseif game.PlaceId == 16787374647 then -- pvp place
     if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
-    print(game.Workspace.CurrentCamera.CameraSubject)
     if friendCheck == true and game.Players.LocalPlayer.Name ~= "BigKnix" then
         repeat wait() until game:IsLoaded()
         if game.Players.LocalPlayer.Character then
