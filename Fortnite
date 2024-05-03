@@ -111,7 +111,7 @@ if game.PlaceId == 14067600077 then -- main menu
     end
         ]]
     )
-    wait(25)
+    wait(7)
     local BBargs = 
     {
         [1] = {
@@ -198,12 +198,12 @@ elseif game.PlaceId == 16787374647 then -- pvp place
                         ]]
                     )
                   wait(10)
+                  webhook("`[" .. Player.Name .. "]`\nSuccessful match!\n" .. Player.Name .. " lost against " .. Friend)
                   game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
                 end
             end
         end
     elseif friendCheck == true and game.Players.LocalPlayer.Name == "BigKnix" then
-        print("CHECK IS TRUE")
         repeat wait() until game:IsLoaded()
         repeat wait() until game.Players:FindFirstChild(Friend)
         wait(1)
@@ -216,6 +216,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
             ]]
         )
         wait(15)
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match!\n" .. Player.Name .. " won against " .. Friend)
         game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
     --[[    repeat 
             
@@ -237,6 +238,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
     end
 elseif game.PlaceId == 14069678431 or game.PlaceId == 14070029709 or game.PlaceId == 14069122388 or game.PlaceId == 14071822972 then
     repeat wait() until game:IsLoaded()
+    webhook("`[" .. Player.Name .. "]`\nQueued against the wrong opponent! The match has been successfully dodged!")
     game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
 end
 
