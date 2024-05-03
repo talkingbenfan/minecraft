@@ -1,1 +1,287 @@
-print("YEP")
+--[[
+checks at start: if in a lobby check for other player, if not then:
+join lowest server, wait 30s, if counterpart not there then join lowest again
+when in same server wait until 0 or 1 in queue, then queue, if same player there then start fight, the one thats giving elo insta kills itself and it repeats
+
+]]--
+repeat wait() until game:IsLoaded()
+wait(10)
+-- Variables
+local Friend = "SerendipityXeke" -- player to queue with
+if game.Players.LocalPlayer.Name == "SerendipityXeke" then 
+    Friend = "BigKnix"
+end
+repeat wait() until game.Players.LocalPlayer
+local Player = game.Players.LocalPlayer
+local checkSeconds = 30
+
+
+-- Non-essentials
+local request = request or http_request
+local function webhook(happen)
+    request({
+        Url = "https://discord.com/api/webhooks/1235925524145111050/EwilYz52TBvjIgV60yPrLt-5eGJ9Fm5rvY_hvDL6Crs12TS_zVxEa4r-bSijm4RXWmg8";
+        Method = 'POST',
+        Headers = {
+            ['Content-Type'] = 'application/json'
+        },
+        Body = game:GetService('HttpService'):JSONEncode({content = tostring(happen)})
+    }); 
+end
+
+
+-- Functions
+local function waitActive()
+    repeat wait() until isrbxactive() == true
+end
+
+local function loopClick(End)
+    for i=1,End do
+        waitActive()
+        mouse1click()
+        task.wait()
+    end
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+if game.PlaceId == 14067600077 then -- main menu
+    local smallestServer;
+    local playerAmount = 1000
+    webhook("`[" .. Player.Name .. "]`\nGetting servers! PlaceId is " .. game.PlaceId .. "\nScript will now look for player: " .. Friend)
+    waitActive()
+    wait(0.25)
+    for i=1,5 do
+        waitActive()
+        keypress(0x20)
+        keyrelease(0x20)
+    end
+    --loopClick(10)
+    wait(0.05)
+    mousemoveabs(960, 580)
+    wait(1)
+    loopClick(10)
+    wait(1)
+    waitActive()
+    mousemoveabs(1020, 660)
+    loopClick(10)
+    wait(0.75)
+    waitActive()
+    mousemoveabs(960, 950)
+    wait(1)
+    loopClick(10)
+    wait(1)
+    for i, v in pairs(Player.PlayerGui.MainMenu.MainMenu.LobbyList.List.Container:GetDescendants()) do
+        if v.Name == "PlayerCount" then
+            if tonumber(string.split(v.Text, "/")[1]) <= tonumber(playerAmount) then
+                playerAmount = tonumber(string.split(v.Text, "/")[1])
+                print("search for me " .. playerAmount)
+                smallestServer = string.split(v.Parent.LobbyID.Text, "</b> ")[2]
+                print("search for me " .. smallestServer)
+            end
+        end
+    end
+    
+    webhook("`[" .. Player.Name .. "]`\nThe smallest server is: " .. smallestServer .. " with " .. tostring(playerAmount) .. " players")
+    wait(1)
+    waitActive()
+    mousemoveabs(1120, 920)
+    wait(1)
+    for scroll=1,20 do
+        waitActive()
+        mousescroll(-90000)
+        wait(0.1)
+    end
+    wait(1)
+    loopClick(5)
+    queue_on_teleport(
+        [[
+            if game.PlaceId == 16883972004 then
+            local request = request or http_request
+    local function webhook(happen)
+        request({
+            Url = "https://discord.com/api/webhooks/1235925524145111050/EwilYz52TBvjIgV60yPrLt-5eGJ9Fm5rvY_hvDL6Crs12TS_zVxEa4r-bSijm4RXWmg8";
+            Method = 'POST',
+            Headers = {
+                ['Content-Type'] = 'application/json'
+            },
+            Body = game:GetService('HttpService'):JSONEncode({content = tostring(happen)})
+        }); 
+    end
+    wait(3)
+    webhook("`[" .. Player.Name .. "]`\nSuccessful teleportation, messaging from queue_on_teleport!\nJobId: `" .. game.JobId .. "`")
+    end
+        ]]
+    )
+    wait(25)
+    local BBargs = 
+    {
+        [1] = {
+        ["Method"] = "SelectSlot",
+        ["SelectedSlot"] = "A"
+        }
+    }
+    game:GetService("ReplicatedStorage").Remotes.Returnable:InvokeServer(unpack(BBargs))
+    game:GetService("ReplicatedStorage").Remotes.TeleportEvent:FireServer()
+elseif game.PlaceId == 16883972004 then -- queue place
+    repeat wait() until game:IsLoaded()
+    repeat wait() until isrbxactive() == true
+    wait(4)
+    mousemoveabs(885, 280)
+    wait(1)
+    loopClick(10)
+    wait(1)
+    waitActive()
+    mousemoveabs(1060, 980)
+    loopClick(30)
+    game:GetService("ReplicatedStorage").RankedRemotes.IsReady:FireServer()
+    local ones = string.split(Player.PlayerGui.Main.Frame.Window.Home.Buttons["1v1"].InQueue.Text, " ")[1]
+    local onesNumber = tonumber(ones)
+    -- now we check if friend is here
+    local friendCheck = false
+    local intervalCheck = 0
+    local totalVal = 0
+    local intervalVal = 5
+    if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+    repeat 
+    print(checkSeconds)
+    if intervalCheck == intervalVal then
+        if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+        totalVal = totalVal + intervalVal
+        print("hit " .. totalVal .. " friendcheck: " .. tostring(friendCheck))
+        webhook("`[" .. Player.Name .. "]`\nRunning friend check loop!\nChecked " .. tostring(totalVal/5) .. " times for: " .. Friend)
+        intervalCheck = 0
+    end
+    wait(1)
+    intervalCheck = intervalCheck + 1
+    checkSeconds = checkSeconds - 1
+    until friendCheck == true or checkSeconds == 0
+    if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+    if friendCheck == true then
+        webhook("`[" .. Player.Name .. "]`\nFound whitelisted friend! `[" .. Friend .. "]`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
+        if onesNumber <= 1 then
+            -- queue
+            game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
+            webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
+         elseif onesNumber > 1 then
+            repeat
+               wait()
+                if onesNumber > 5 then
+                    webhook("`[" .. Player.Name .. "]`\nToo many players! Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
+                    game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+                end
+            until onesNumber <= 1 
+            if onesNumber <=1 then
+                game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
+                webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
+            end
+         end
+    elseif friendCheck == false then
+        webhook("`[" .. Player.Name .. "]`\nCould not find whitelisted friend! `[" .. Friend .. "]`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
+    --    game:GetService("TeleportService"):Teleport(14067600077, game.Players.LocalPlayer)
+        game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+    end
+elseif game.PlaceId == 16787374647 then -- pvp place
+    if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+    print(game.Workspace.CurrentCamera.CameraSubject)
+    if friendCheck == true and game.Players.LocalPlayer.Name ~= "BigKnix" then
+        repeat wait() until game:IsLoaded()
+        if game.Players.LocalPlayer.Character then
+            if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+            if friendCheck == true then
+                if game.Players.LocalPlayer.Character then
+                    queue_on_teleport(
+                        [[
+                            repeat wait() until game:IsLoaded()
+                            wait(3)
+                            game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+                        ]]
+                    )
+                  wait(10)
+                  game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+                end
+            end
+        end
+    elseif friendCheck == true and game.Players.LocalPlayer.Name == "BigKnix" then
+        print("CHECK IS TRUE")
+        repeat wait() until game:IsLoaded()
+        repeat wait() until game.Players:FindFirstChild(Friend)
+        wait(1)
+        repeat wait() until not game.Players:FindFirstChild(Friend)
+        queue_on_teleport(
+            [[
+                repeat wait() until game:IsLoaded()
+                wait(3)
+                game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+            ]]
+        )
+        wait(15)
+        game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+    --[[    repeat 
+            
+
+            wait()
+        until not game.Players:FindFirstChild(Friend).Character:FindFirstChild("Head") or game.Players:FindFirstChild(Friend).Character:FindFirstChild("Humanoid").Health = <= 10]]--
+    --    wait(5)
+  --      game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+    elseif friendCheck == false then
+        queue_on_teleport(
+            [[
+                repeat wait() until game:IsLoaded()
+                wait(3)
+                game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+            ]]
+        )
+        wait(0.25)
+        game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+    end
+elseif game.PlaceId == 14069678431 or game.PlaceId == 14070029709 or game.PlaceId == 14069122388 or game.PlaceId == 14071822972 then
+    repeat wait() until game:IsLoaded()
+    game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+end
+
+-- 905, 260 to pick slot
+-- 1060, 940 to continue
+
+
+
+--game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("message")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--[[ working
+    local oldNamecall
+oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+
+    if not checkcaller() and method == "FireServer" and tostring(self) == "ReturnMainMenu" then
+        return oldNamecall(self, ...)
+    end
+    return oldNamecall(self, ...)
+end))
+]]--
