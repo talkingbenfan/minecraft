@@ -4,8 +4,7 @@ join lowest server, wait 30s, if counterpart not there then join lowest again
 when in same server wait until 0 or 1 in queue, then queue, if same player there then start fight, the one thats giving elo insta kills itself and it repeats
 
 ]]--
-repeat wait() until game:IsLoaded()
-wait(10)
+
 -- Variables
 local Friend = "SerendipityXeke" -- player to queue with
 if game.Players.LocalPlayer.Name == "SerendipityXeke" then 
@@ -44,6 +43,8 @@ local function loopClick(End)
 end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if game.PlaceId == 14067600077 then -- main menu
+    repeat wait() until game:IsLoaded()
+wait(10)
     local smallestServer;
     local playerAmount = 1000
     webhook("`[" .. Player.Name .. "]`\nGetting servers! PlaceId is " .. game.PlaceId .. "\nScript will now look for player: " .. Friend)
@@ -123,6 +124,7 @@ if game.PlaceId == 14067600077 then -- main menu
     game:GetService("ReplicatedStorage").Remotes.TeleportEvent:FireServer()
 elseif game.PlaceId == 16883972004 then -- queue place
     repeat wait() until game:IsLoaded()
+    wait(10)
     repeat wait() until isrbxactive() == true
     wait(4)
     mousemoveabs(885, 280)
@@ -204,6 +206,8 @@ elseif game.PlaceId == 16883972004 then -- queue place
         game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
     end
 elseif game.PlaceId == 16787374647 then -- pvp place
+    repeat wait() until game:IsLoaded()
+wait(10)
     if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
     if friendCheck == true and game.Players.LocalPlayer.Name ~= "BigKnix" then
         repeat wait() until game:IsLoaded()
@@ -227,6 +231,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
         end
     elseif friendCheck == true and game.Players.LocalPlayer.Name == "BigKnix" then
         repeat wait() until game:IsLoaded()
+wait(10)
         repeat wait() until game.Players:FindFirstChild(Friend)
         webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " Matched up against " .. Friend)
         wait(1)
@@ -256,7 +261,6 @@ elseif game.PlaceId == 16787374647 then -- pvp place
                 game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
             ]]
         )
-        wait(0.15)
         webhook("`[" .. Player.Name .. "]`\nQueued against the wrong opponent! The match has been successfully dodged!")
         game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
     end
