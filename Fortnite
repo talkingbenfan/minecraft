@@ -159,12 +159,12 @@ elseif game.PlaceId == 16883972004 then -- queue place
         webhook("`[" .. Player.Name .. "]`\nFound whitelisted friend! `[" .. Friend .. "]`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
         if onesNumber <= 1 then
             -- queue
+            webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
             game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
             for runQueue=1,20 do
                 game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
                 wait(0.05)
             end
-            webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
          elseif onesNumber > 1 then
             repeat
                wait()
