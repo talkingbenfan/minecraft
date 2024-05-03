@@ -205,12 +205,14 @@ elseif game.PlaceId == 16883972004 then -- queue place
         game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
     end
 elseif game.PlaceId == 16787374647 then -- pvp place
-    repeat wait() until game:IsLoaded()
-wait(10)
+    repeat wait() until game.Players
+    repeat wait() until game.Players.LocalPlayer
     if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
+    repeat wait() until game:IsLoaded()
+    wait(10)
     if friendCheck == true and game.Players.LocalPlayer.Name ~= "BigKnix" then
         repeat wait() until game:IsLoaded()
-        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " Matched up against " .. Friend)
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " matched up against " .. Friend)
         if game.Players.LocalPlayer.Character then
             if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
             if friendCheck == true then
@@ -232,7 +234,7 @@ wait(10)
         repeat wait() until game:IsLoaded()
 wait(10)
         repeat wait() until game.Players:FindFirstChild(Friend)
-        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " Matched up against " .. Friend)
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " matched up against " .. Friend)
         wait(1)
         repeat wait() until not game.Players:FindFirstChild(Friend)
         webhook("`[" .. Player.Name .. "]`\nSuccessful match win!\n" .. Player.Name .. " won against " .. Friend)
@@ -244,7 +246,10 @@ wait(10)
             ]]
         )
         wait(3)
-        game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+        for returnSpam=1,15 do
+            game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
+            wait(0.1)
+        end
     --[[    repeat 
             
 
