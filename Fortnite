@@ -160,6 +160,10 @@ elseif game.PlaceId == 16883972004 then -- queue place
         if onesNumber <= 1 then
             -- queue
             game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
+            for runQueue=1,20 do
+                game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
+                wait(0.05)
+            end
             webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
          elseif onesNumber > 1 then
             repeat
@@ -239,6 +243,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
 elseif game.PlaceId == 14069678431 or game.PlaceId == 14070029709 or game.PlaceId == 14069122388 or game.PlaceId == 14071822972 then
     repeat wait() until game:IsLoaded()
     webhook("`[" .. Player.Name .. "]`\nQueued against the wrong opponent! The match has been successfully dodged!")
+    wait(0.05)
     game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
 end
 
