@@ -161,9 +161,9 @@ elseif game.PlaceId == 16883972004 then -- queue place
             -- queue
             webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
             game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
-            for runQueue=1,20 do
+            for runQueue=1,40 do
                 game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
-                wait(0.05)
+                wait(0.025)
             end
          elseif onesNumber > 1 then
             repeat
@@ -173,9 +173,10 @@ elseif game.PlaceId == 16883972004 then -- queue place
                     game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
                 end
             until onesNumber <= 1 
-            if onesNumber <=1 then
+            webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
+            for runQueue=1,40 do
                 game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
-                webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
+                wait(0.025)
             end
          end
          wait(60)
@@ -190,6 +191,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
     if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
     if friendCheck == true and game.Players.LocalPlayer.Name ~= "BigKnix" then
         repeat wait() until game:IsLoaded()
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " Matched up against " .. Friend)
         if game.Players.LocalPlayer.Character then
             if game.Players:FindFirstChild(Friend) then friendCheck = true else friendCheck = false end
             if friendCheck == true then
@@ -202,7 +204,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
                         ]]
                     )
                   wait(10)
-                  webhook("`[" .. Player.Name .. "]`\nSuccessful match!\n" .. Player.Name .. " lost against " .. Friend)
+                  webhook("`[" .. Player.Name .. "]`\nSuccessful match win!\n" .. Player.Name .. " lost against " .. Friend)
                   game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
                 end
             end
@@ -210,8 +212,10 @@ elseif game.PlaceId == 16787374647 then -- pvp place
     elseif friendCheck == true and game.Players.LocalPlayer.Name == "BigKnix" then
         repeat wait() until game:IsLoaded()
         repeat wait() until game.Players:FindFirstChild(Friend)
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match received!\n" .. Player.Name .. " Matched up against " .. Friend)
         wait(1)
         repeat wait() until not game.Players:FindFirstChild(Friend)
+        webhook("`[" .. Player.Name .. "]`\nSuccessful match win!\n" .. Player.Name .. " won against " .. Friend)
         queue_on_teleport(
             [[
                 repeat wait() until game:IsLoaded()
@@ -219,8 +223,7 @@ elseif game.PlaceId == 16787374647 then -- pvp place
                 game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
             ]]
         )
-        wait(15)
-        webhook("`[" .. Player.Name .. "]`\nSuccessful match!\n" .. Player.Name .. " won against " .. Friend)
+        wait(3)
         game:GetService("ReplicatedStorage").MatchRemotes.ReturnToLobby:FireServer("Europe")
     --[[    repeat 
             
