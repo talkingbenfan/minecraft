@@ -166,22 +166,38 @@ elseif game.PlaceId == 16883972004 then -- queue place
                 wait(0.025)
             end
          elseif onesNumber > 1 then
+            local maxSec = 45
+            local intCheck = 0
+            local totalV = 0
+            local intVal = 5
             repeat
                wait()
+               if not game.Players:FindFirstChild(Friend) then
+                webhook("`[" .. Player.Name .. "]`\nFriend left during queue place (unknown reason). Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
+                game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+               end
+               if intCheck == intVal then
+                    totalV = totalV + intervalVal
+                    intCheck = 0
+               end
                 if onesNumber > 5 then
                     webhook("`[" .. Player.Name .. "]`\nToo many players! Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
                     game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
                 end
-            until onesNumber <= 1 
+                wait(1)
+                intCheck = intCheck + 1
+                maxSec = maxSec - 1
+            until onesNumber <= 1 or maxSec == 0
+            if maxSec == 0 then
+                webhook("`[" .. Player.Name .. "]`\nTook too long! Waited for 60s. Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
+                game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
+            end
             webhook("`[" .. Player.Name .. "]`\nQueueing!\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```")
             for runQueue=1,40 do
                 game:GetService("ReplicatedStorage").RankedRequests.Queue:InvokeServer("1v1")
                 wait(0.025)
             end
          end
-         wait(60)
-         webhook("`[" .. Player.Name .. "]`\nTook too long! Waited for 60s. Leaving server`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
-         game:GetService("ReplicatedStorage").Remotes.ReturnMainMenu:FireServer()
         elseif friendCheck == false then
         webhook("`[" .. Player.Name .. "]`\nCould not find whitelisted friend! `[" .. Friend .. "]`\nCurrent players in queue:\n```yaml\n1v1: " .. ones .. "```\n\nReturning to main menu from queue place! (16883972004->14067600077)")
     --    game:GetService("TeleportService"):Teleport(14067600077, game.Players.LocalPlayer)
